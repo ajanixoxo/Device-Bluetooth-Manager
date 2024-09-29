@@ -13,6 +13,7 @@ function Home() {
     // AOS.init()
 
     const [devices, setDevices] = useState([]);
+    const [batteryLevel, setBatteryLevel] = useState(null);
     const [connectedDevice, setConnectedDevice] = useState(null);
     const [error, setError] = useState(null); // State to store errors
 
@@ -23,7 +24,9 @@ function Home() {
             const device = await navigator.bluetooth.requestDevice({
                 acceptAllDevices: true
             });
-
+          
+            const server = await device.gatt.connect();
+            console.log(device)
             // Once a device is selected, add it to the list
             setDevices((prevDevices) => [...prevDevices, device]);
         } catch (err) {
@@ -31,16 +34,7 @@ function Home() {
         }
     };
 
-    // Function to connect to a Bluetooth device
-    const connectToDevice = async (device) => {
-        try {
-            const server = await device.gatt.connect();
-            setConnectedDevice(device);
-            console.log('Connected to device:', device);
-        } catch (error) {
-            console.log('Connection failed:', error);
-        }
-    };
+   
 
     return (
         <div>
